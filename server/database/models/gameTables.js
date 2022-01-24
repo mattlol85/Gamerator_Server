@@ -85,7 +85,7 @@ const AdventureGames = gameDatabase.define('adventuregames', {
         allowNull: false
     }
 })
-const ShootingGames = gameDatabase.define('shootinggames', {
+const ShooterGames = gameDatabase.define('shootergames', {
     gameName: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -142,4 +142,4 @@ const RPGGames = gameDatabase.define('rpggames', {
     }
 })
 
-    module.exports = {ActionGames,IndieGames,AdventureGames,ShootingGames,RPGGames}
+    module.exports = {ActionGames,IndieGames,AdventureGames,ShooterGames,RPGGames}
