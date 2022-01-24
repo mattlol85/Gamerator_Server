@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const gameDatabase = require("..");
+const gameDatabase = require("../database");
 
 const User = gameDatabase.define('userTable', {
     userID: {

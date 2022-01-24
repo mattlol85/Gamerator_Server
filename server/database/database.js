@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
 
-const myDatabase = new Sequelize("postgres://postgres:(ENTER PASSWORD HERE!)localhost:5432/campusdb",{logging : false})
+const gameDatabase = new Sequelize("postgres://postgres:123@localhost:5432/campusdb",{logging : false})
 
-module.exports = myDatabase
+module.exports = gameDatabase
