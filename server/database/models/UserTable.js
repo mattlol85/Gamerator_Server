@@ -1,22 +1,18 @@
 const Sequelize = require("sequelize");
 const gameDatabase = require("../database");
 
-const User = gameDatabase.define('userTable', {
-    userID: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
+const Users = gameDatabase.define('users', {
     userName: {
         type: Sequelize.STRING,
         unique: true,
+        allowNull: false,
         validate: {
             notEmpty: true
         }
     },
     password: {
         type: Sequelize.STRING,
-        unique: true,
+        allowNull: false,
         validate: {
             notEmpty: true
         }
@@ -24,4 +20,4 @@ const User = gameDatabase.define('userTable', {
 })
 
 
-modules.export = User
+module.exports = Users
