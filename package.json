@@ -1,0 +1,16 @@
+{
+  "name": "capstone_backend",
+  "version": "1.0.0",
+  "description": "Backend for Capstone",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "pg": "^8.7.1",
+    "sequelize": "^6.13.0"
+  }
+}
