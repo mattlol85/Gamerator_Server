@@ -4,8 +4,9 @@ const {ActionGames} = require('../database')
 router.get('/', async (req, res) => {
     try {
       const actiongames = await ActionGames.findAll()
+      .then((actiongames) => {
       res.send(actiongames)
-    } catch (error) {
+    })} catch (error) {
       res.send(error.message)
     }
   })
