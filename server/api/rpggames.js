@@ -10,5 +10,14 @@ router.get('/', async (req, res) => {
       res.send(error.message)
     }
   })
+  router.get('/limit=:limit', async (req, res) => {
+    try {
+      var rpggames = await Games.findAll({where:{genres:{[Op.contains]:["RPG"]}}})
+      rpggames.length = req.params.limit
+      res.send(rpggames)}
+      catch (error) {
+      res.send(error.message)
+    }
+  })
 
   module.exports = router
