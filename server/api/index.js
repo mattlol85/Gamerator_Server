@@ -30,13 +30,14 @@ Router.get('/fetch25', async (req, res) => {
         
       for(let element of games)
       {
-        if(rand.action.length < 5 && element.genres.includes("Action"))rand.action.push(element);break;
-        if(rand.action.length < 5 && element.genres.includes("Action"))rand.action.push(element);break;
-        if(rand.action.length < 5 && element.genres.includes("Action"))rand.action.push(element);break;
+        if(rand.action.length < 5 && element.genres.includes("Action")){rand.action.push(element);continue;}
+        if(rand.indie.length < 5 && element.genres.includes("Indie")){rand.indie.push(element);continue;}
+        if(rand.adventure.length < 5 && element.genres.includes("Adventure")){rand.adventure.push(element);continue;}
+        if(rand.rpg.length < 5 && element.genres.includes("RPG")){rand.rpg.push(element);continue;}
+        if(rand.shooter.length < 5 && element.genres.includes("Shooter")){rand.shooter.push(element);continue;}
       }
-      rand.then((rand) => {
-        res.send(rand);
-      });} catch (error) {
+        res.send(rand)} 
+        catch (error) {
       res.send(error.message)
     }
   })
