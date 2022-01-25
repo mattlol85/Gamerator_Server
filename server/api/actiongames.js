@@ -4,10 +4,9 @@ const {Op} = require('sequelize')
 
 router.get('/', async (req, res) => {
     try {
-      const actiongames = await Games.findAll({where:{genre:{[Op.contains]:["Action"]}}})
-      .then((actiongames) => {
-      res.send(actiongames)
-    })} catch (error) {
+      const actiongames = await Games.findAll({where:{genres:{[Op.contains]:["Action"]}}})
+      res.send(actiongames)}
+      catch (error) {
       res.send(error.message)
     }
   })
