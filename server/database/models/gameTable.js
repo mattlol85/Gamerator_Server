@@ -17,7 +17,10 @@ const Games = gameDatabase.define('games', {
             notEmpty: true
         }
     },
-    tally: {
+    avgScore: {
+        type: Sequelize.DECIMAL,
+    },
+    numVotes: {
         type: Sequelize.INTEGER,
     },
     description: {

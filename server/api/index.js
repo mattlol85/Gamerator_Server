@@ -53,7 +53,7 @@ Router.get("/all", async (req, res) => {
     res.send(error.message);
   }
 });
-Router.put("/:name");
+
 Router.get("/fetch25", async (req, res) => {
   try {
     var rand = { action: [], indie: [], adventure: [], rpg: [], shooter: [] };
@@ -86,6 +86,7 @@ Router.get("/fetch25", async (req, res) => {
     res.send(error.message);
   }
 });
+
 Router.get("/leaderboard", async (req, res) => {
   try {
     var lb = { action: [], indie: [], adventure: [], rpg: [], shooter: [] };
@@ -111,4 +112,26 @@ Router.get("/leaderboard", async (req, res) => {
     res.send(error.message);
   }
 });
+
+Router.get("/:id", async (req, res) => {
+    try {
+        const game = await Games.findByPk(req.params.id) 
+        res.send(game)} 
+    catch (error) {
+      res.send(error.message);
+    }
+  });
+
+Router.put("/:id/:score", async (req, res) => {
+    try {
+      const game = await Games.findByPk(req.params.id)
+      let newNum = game.numVotes + 1
+      let newAvg = Number((Number(game.avgScore) + (Number(req.params.score)-Number(game.avgScore))/newNum).toFixed(2))
+      await game.update({numVotes:newNum,avgScore:newAvg})
+      res.send("Vote successfully processed!");} 
+    catch (error) {
+      res.send(error.message);
+    }
+  });
+
 module.exports = Router;
