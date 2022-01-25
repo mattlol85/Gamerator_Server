@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize')
 const seedDatabase = require('./databaseSeeder')
-const myDatabase = require('./database')
-const {ActionGames,IndieGames,AdventureGames,ShooterGames,RPGGames} = require("./models/gameTables");
+const gameDatabase = require('./database')
+const Games = require("./models/gameTable");
 
 
 module.exports = {
-    myDatabase,seedDatabase,ActionGames,IndieGames,AdventureGames,ShooterGames,RPGGames
+    gameDatabase,seedDatabase,Games
 }

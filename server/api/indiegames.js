@@ -1,9 +1,10 @@
 const router = require('express').Router()
-const {IndieGames} = require('../database')
+const {Games} = require('../database')
+const {Op} = require('sequelize')
 
 router.get('/', async (req, res) => {
     try {
-      const indiegames = await IndieGames.findAll()
+      const indiegames = await Games.findAll({where:{genre:{[Op.contains]:["Indie"]}}})
       .then((indiegames) => {
         res.send(indiegames);
       });} catch (error) {
@@ -12,3 +13,4 @@ router.get('/', async (req, res) => {
   })
 
   module.exports = router
+

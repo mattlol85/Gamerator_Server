@@ -1,9 +1,10 @@
 const router = require('express').Router()
-const {ActionGames} = require('../database')
+const {Games} = require('../database')
+const {Op} = require('sequelize')
 
 router.get('/', async (req, res) => {
     try {
-      const actiongames = await ActionGames.findAll()
+      const actiongames = await Games.findAll({where:{genre:{[Op.contains]:["Action"]}}})
       .then((actiongames) => {
       res.send(actiongames)
     })} catch (error) {

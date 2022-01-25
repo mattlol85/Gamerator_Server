@@ -1,57 +1,46 @@
 require ("dotenv").config();
-const axios = require("axios")
-const {ActionGames,IndieGames,AdventureGames,ShooterGames,RPGGames} = require("./models/gameTables");
+const axios = require("axios");
+const { emit } = require("nodemon");
+const Games = require("./models/gameTable");
 
 
 const seedDatabase = async ()=>{
-
-const actionList = (await axios.get(`https://api.rawg.io/api/games?genres=action&page_size=5&key=${process.env.GRAW_KEY}`)).data.results
-const indieList = (await axios.get(`https://api.rawg.io/api/games?genres=indie&page_size=5&key=${process.env.GRAW_KEY}`)).data.results
-const adventureList = (await axios.get(`https://api.rawg.io/api/games?genres=adventure&page_size=5&key=${process.env.GRAW_KEY}`)).data.results
-const shooterList = (await axios.get(`https://api.rawg.io/api/games?genres=shooter&page_size=5&key=${process.env.GRAW_KEY}`)).data.results
-const rpgList = (await axios.get(`https://api.rawg.io/api/games?genres=5&page_size=5&key=${process.env.GRAW_KEY}`)).data.results 
-    console.log(`------------------\nFinished retreiving initial game data`)
-
-for(let element of actionList){
-
+    if(!await Games.findOne()){
+var g = {genreIds:[4,51,3,5,2],genreNames:["Action","Indie","Adventure","RPG","Shooter"]}
+var gameData;
+for(let i = 0;i<5;i++)
+{gameData = (await axios.get(`https://api.rawg.io/api/games?key=${process.env.GRAW_KEY}&page_size=30&genres=${g.genreIds[i]}`)).data.results
+for(let element of gameData)
+{
+    if(!await Games.findOne({where:{gameName:element.name}}))
+    {
         let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
         let arrImages = element.short_screenshots.map((element)=>element.image)
-
-        await ActionGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages.slice(1)}})
+        let arrPlatforms = temp.parent_platforms.map((element)=>element.platform.name)
+        let arrGenres = temp.genres.map((element)=>element.name)
+        await Games.findOrCreate({where:{
+            gameName:temp.name,
+            genres:arrGenres,
+            tally:0,
+            description:temp.description_raw,
+            metaRating:String(temp.metacritic),
+            userRating:temp.rating,
+            numUserRatings:temp.ratings_count,
+            esrbRating:temp.esrb_rating?temp.esrb_rating.name:'',
+            releaseDate:temp.released,
+            website:temp.website,
+            subreddit:temp.reddit_url,
+            publisher:temp.publishers[0]?temp.publishers[0].name:'',
+            developer:temp.developers[0]?temp.developers[0].name:'',
+            platforms:arrPlatforms,
+            backgroundImg:temp.background_image,
+            images:arrImages.slice(1)}})
+        }
     }
-    console.log(`------------------\nFinished loading /action!`)
-for(let element of indieList){
-
-        let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages = element.short_screenshots.map((element)=>element.image)
-
-        await IndieGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages.slice(1)}})
+console.log(`------------------\nFinished loading ${g.genreNames[i]} chunk!`)
+}
+console.log(`------------------\nFinished loading!`)
     }
-    console.log(`------------------\nFinished loading /indie!`)
-for(let element of adventureList){
-
-        let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages = element.short_screenshots.map((element)=>element.image)
-
-        await AdventureGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages.slice(1)}})
-    }
-    console.log(`------------------\nFinished loading /adventure!`)
-for(let element of shooterList){
-
-        let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages = element.short_screenshots.map((element)=>element.image)
-
-        await ShooterGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages.slice(1)}})
-    }
-    console.log(`------------------\nFinished loading /shooter!`)
-for(let element of rpgList){
-
-        let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages = element.short_screenshots.map((element)=>element.image)
-
-        await RPGGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages.slice(1)}})
-    }
-    console.log(`------------------\nFinished loading /rpg!\n------------------\nDone loading!`)
 }
 module.exports = seedDatabase
 //gameName tally description trailer backgroundImg images
