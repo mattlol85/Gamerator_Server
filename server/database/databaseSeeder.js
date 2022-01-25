@@ -13,37 +13,47 @@ const rpgList = (await axios.get(`https://api.rawg.io/api/games?genres=5&page_si
     console.log(`------------------\nFinished retreiving initial game data`)
 
 for(let element of actionList){
+
         let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages= (await axios.get(`https://api.rawg.io/api/games/${element.id}/screenshots?key=${process.env.GRAW_KEY}`)).data.results
-        arrImages = arrImages.map((element)=>element.image)
+        let arrImages = element.short_screenshots.map((element)=>element.image)
+        arrImages = arrImages.splice(1)
+
         await ActionGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages}})
     }
     console.log(`------------------\nFinished loading /action!`)
 for(let element of indieList){
+
         let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages= (await axios.get(`https://api.rawg.io/api/games/${element.id}/screenshots?key=${process.env.GRAW_KEY}`)).data.results
-        arrImages = arrImages.map((element)=>element.image)
+        let arrImages = element.short_screenshots.map((element)=>element.image)
+        arrImages = arrImages.splice(1)
+
         await IndieGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages}})
     }
     console.log(`------------------\nFinished loading /indie!`)
 for(let element of adventureList){
+
         let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages= (await axios.get(`https://api.rawg.io/api/games/${element.id}/screenshots?key=${process.env.GRAW_KEY}`)).data.results
-        arrImages = arrImages.map((element)=>element.image)
+        let arrImages = element.short_screenshots.map((element)=>element.image)
+        arrImages = arrImages.splice(1)
+
         await AdventureGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages}})
     }
     console.log(`------------------\nFinished loading /adventure!`)
 for(let element of shooterList){
+
         let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages= (await axios.get(`https://api.rawg.io/api/games/${element.id}/screenshots?key=${process.env.GRAW_KEY}`)).data.results
-        arrImages = arrImages.map((element)=>element.image)
+        let arrImages = element.short_screenshots.map((element)=>element.image)
+        arrImages = arrImages.splice(1)
+
         await ShooterGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages}})
     }
     console.log(`------------------\nFinished loading /shooter!`)
 for(let element of rpgList){
+
         let temp = (await axios.get(`https://api.rawg.io/api/games/${element.id}?key=${process.env.GRAW_KEY}`)).data
-        let arrImages= (await axios.get(`https://api.rawg.io/api/games/${element.id}/screenshots?key=${process.env.GRAW_KEY}`)).data.results
-        arrImages = arrImages.map((element)=>element.image)
+        let arrImages = element.short_screenshots.map((element)=>element.image)
+        arrImages = arrImages.slice(1)
+
         await RPGGames.findOrCreate({where:{gameName:temp.name,tally:0,description:temp.description_raw,backgroundImg:temp.background_image,images:arrImages}})
     }
     console.log(`------------------\nFinished loading /rpg!\n------------------\nDone loading!`)
