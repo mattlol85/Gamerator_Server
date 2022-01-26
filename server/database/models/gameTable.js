@@ -18,7 +18,7 @@ const Games = gameDatabase.define('games', {
         }
     },
     numScores: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
     },
     numVotes: {
         type: Sequelize.INTEGER,
