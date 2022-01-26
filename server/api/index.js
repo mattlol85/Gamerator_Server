@@ -93,7 +93,7 @@ Router.get("/leaderboard", async (req, res) => {
     const games = await Games.findAll({
       where: { metaRating: { [Op.not]: ["null"] },
                ourScore: { [Op.not]: ["0"] } },
-      order: [["ourScore", "DESC"]],
+      order: [['numVotes','DESC'],['ourScore','DESC']]
     });
     //sorting by metacritic rating
     for (let element of games) {
@@ -126,10 +126,10 @@ Router.get("/:id", async (req, res) => {
 Router.put("/:id/:score", async (req, res) => {
     try {
       const game = await Games.findByPk(req.params.id)
-      await game.increment('numVotes',{silent:true})
-      await game.increment(['numScores'],{by : req.params.score},{silent:true})
+      await game.increment('numVotes')
+      await game.increment(['numScores'],{by : req.params.score})
       let avg = Number((Number(game.numScores)/Number(game.numVotes)).toFixed(2))
-      await game.update({ourScore:avg},{silent:true})
+      await game.update({ourScore:avg})
       res.send({numVotes: game.numVotes, numScores: game.numScores, ourScore: game.ourScore})} 
     catch (error) {
       res.send(error.message)
