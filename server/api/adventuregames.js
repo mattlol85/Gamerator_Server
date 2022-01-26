@@ -4,7 +4,7 @@ const {Op} = require('sequelize')
 
 router.get('/', async (req, res) => {
     try {
-      const adventuregames = await Games.findAll({where:{genres:{[Op.contains]:["Adventure"]}}})
+      const adventuregames = await Games.findAll({where:{genres:{[Op.contains]:["Adventure"]}},order: [["id", "ASC"]]})
       res.send(adventuregames)}
       catch (error) {
       res.send(error.message)
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
   })
   router.get('/limit=:limit', async (req, res) => {
     try {
-      var adventuregames = await Games.findAll({where:{genres:{[Op.contains]:["Adventure"]}}})
+      var adventuregames = await Games.findAll({where:{genres:{[Op.contains]:["Adventure"]}},order: [["id", "ASC"]]})
       adventuregames.length = req.params.limit
       res.send(adventuregames)}
       catch (error) {
