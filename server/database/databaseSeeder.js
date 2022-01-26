@@ -21,8 +21,9 @@ for(let element of gameData)
         await Games.findOrCreate({where:{
             gameName:temp.name,
             genres:arrGenres,
-            avgScore:0,
+            numScores:0,
             numVotes:0,
+            ourScore:0,
             description:temp.description_raw,
             metaRating:String(temp.metacritic),
             userRating:temp.rating,

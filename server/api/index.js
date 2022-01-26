@@ -97,19 +97,19 @@ Router.get("/leaderboard", async (req, res) => {
     //sorting by metacritic rating
     for (let element of games) {
       if (lb.action.length < 5 && element.genres.includes("Action"))
-        lb.action.push(element);
+        {lb.action.push(element);}
       if (lb.indie.length < 5 && element.genres.includes("Indie"))
-        lb.indie.push(element);
+        {lb.indie.push(element);}
       if (lb.adventure.length < 5 && element.genres.includes("Adventure"))
-        lb.adventure.push(element);
+        {lb.adventure.push(element);}
       if (lb.rpg.length < 5 && element.genres.includes("RPG"))
-        lb.rpg.push(element);
+        {lb.rpg.push(element);}
       if (lb.shooter.length < 5 && element.genres.includes("Shooter"))
-        lb.shooter.push(element);
+        {lb.shooter.push(element);}
     }
     res.send(lb);
   } catch (error) {
-    res.send(error.message);
+    res.send(error.message)
   }
 });
 
@@ -118,19 +118,20 @@ Router.get("/:id", async (req, res) => {
         const game = await Games.findByPk(req.params.id) 
         res.send(game)} 
     catch (error) {
-      res.send(error.message);
+      res.send(error.message)
     }
   });
 
 Router.put("/:id/:score", async (req, res) => {
     try {
       const game = await Games.findByPk(req.params.id)
-      let newNum = game.numVotes + 1
-      let newAvg = Number((Number(game.avgScore) + (Number(req.params.score)-Number(game.avgScore))/newNum).toFixed(2))
-      await game.update({numVotes:newNum,avgScore:newAvg})
-      res.send("Vote successfully processed!");} 
+      await game.increment('numVotes')
+      await game.increment(['numScores'],{by : req.params.score})
+      let avg = Number((Number(game.numScores)/Number(game.numVotes)).toFixed(2))
+      await game.update({ourScore:avg})
+      res.send({numVotes: game.numVotes, numScores: game.numScores, ourScore: game.ourScore})} 
     catch (error) {
-      res.send(error.message);
+      res.send(error.message)
     }
   });
 
