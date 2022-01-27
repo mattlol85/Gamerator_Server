@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const {Games} = require('../database')
+const {Games, gameDatabase } = require('../database')
 const {Op} = require('sequelize')
 
 router.get('/', async (req, res) => {
     try {
-      const rpggames = await Games.findAll({where:{genres:{[Op.contains]:["RPG"]}},order: [["id", "ASC"]]})
+      const rpggames = await Games.findAll({where:{genres:{[Op.contains]:["RPG"]}}, order: gameDatabase.random() })
       res.send(rpggames)
     } catch (error) {
       res.send(error.message)
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
   })
   router.get('/limit=:limit', async (req, res) => {
     try {
-      var rpggames = await Games.findAll({where:{genres:{[Op.contains]:["RPG"]}},order: [["id", "ASC"]]})
+      var rpggames = await Games.findAll({where:{genres:{[Op.contains]:["RPG"]}}, order: gameDatabase.random() })
       rpggames.length = req.params.limit
       res.send(rpggames)}
       catch (error) {

@@ -54,46 +54,12 @@ Router.get("/all", async (req, res) => {
   }
 });
 
-Router.get("/fetch25", async (req, res) => {
-  try {
-    var rand = { action: [], indie: [], adventure: [], rpg: [], shooter: [] };
-    const games = await Games.findAll({ order: gameDatabase.random() });
-
-    for (let element of games) {
-      if (rand.action.length < 5 && element.genres.includes("Action")) {
-        rand.action.push(element);
-        continue;
-      }
-      if (rand.indie.length < 5 && element.genres.includes("Indie")) {
-        rand.indie.push(element);
-        continue;
-      }
-      if (rand.adventure.length < 5 && element.genres.includes("Adventure")) {
-        rand.adventure.push(element);
-        continue;
-      }
-      if (rand.rpg.length < 5 && element.genres.includes("RPG")) {
-        rand.rpg.push(element);
-        continue;
-      }
-      if (rand.shooter.length < 5 && element.genres.includes("Shooter")) {
-        rand.shooter.push(element);
-        continue;
-      }
-    }
-    res.send(rand);
-  } catch (error) {
-    res.send(error.message);
-  }
-});
-
 Router.get("/leaderboard", async (req, res) => {
   try {
     var lb = { action: [], indie: [], adventure: [], rpg: [], shooter: [] };
     const games = await Games.findAll({
-      where: { metaRating: { [Op.not]: ["null"] },
-               ourScore: { [Op.not]: ["0"] } },
-      order: [['numVotes','DESC'],['ourScore','DESC']]
+      where: {ourScore: { [Op.not]: ["0"] } },
+      order: [['ourScore','DESC'],['numVotes','DESC']]
     });
     //sorting by metacritic rating
     for (let element of games) {
