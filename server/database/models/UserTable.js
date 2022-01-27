@@ -2,20 +2,14 @@ const Sequelize = require("sequelize");
 const gameDatabase = require("../database");
 
 const Users = gameDatabase.define('users', {
-    userName: {
+    email: {
         type: Sequelize.STRING,
-        unique: true,
+        primaryKey: true,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        }
+
     },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
+    gamesVotedOn: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER)
     }
 })
 
