@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express")
 const app = express()
 const port = 8080
@@ -14,5 +15,5 @@ app.use('/', require('./api/index'))
 gameDatabase.sync().then(() => {seedDatabase()})
 .then(()=>{
     console.log("Database synced!")
-    app.listen(port, () => console.log(`Serving on port ${port}`))
+    app.listen(process.env.PORT || port, () => console.log(`Serving on port ${port}`))
 })
