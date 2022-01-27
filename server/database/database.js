@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize')
-
-const gameDatabase = new Sequelize("postgres://postgres:123@localhost:5432/capstone",{logging : false})
-
+//console.log("postgres://" + process.env.DB_USERNAME +":"+ process.env.DB_PASSWORD + "@"+ process.env.DB_HOSTNAME +"/capstone");
+const gameDatabase = new Sequelize("postgres://" + process.env.DB_USERNAME +":"+process.env.DB_PASSWORD + "@"+ process.env.DB_HOSTNAME +"/capstone",{logging : false})
 module.exports = gameDatabase

@@ -5,8 +5,11 @@ Router.use('/indie', require('./indiegames'))
 Router.use('/adventure', require('./adventuregames'))
 Router.use('/shooter', require('./shootergames'))
 Router.use('/rpg', require('./rpggames'))
+
 Router.get('/', (req,res)=>{
     try {res.send("Welcome to the API level!")}
     catch(error){res.send(error.message)}
 })
+
+
 module.exports = Router
