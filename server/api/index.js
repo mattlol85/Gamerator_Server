@@ -4,7 +4,7 @@ const passport = require("passport");
 const Router = require("express").Router();
 const { Games, gameDatabase } = require("../database");
 const { Op } = require("sequelize");
-require("./auth");
+//require("./auth");
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
