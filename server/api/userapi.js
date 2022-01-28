@@ -15,25 +15,17 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENTID)
 //   res.status(201)
 //   res.json({ name, email, picture })})
 
-router.post('/', async (req, res) => {
+router.post('/:email', async (req, res) => {
     try {
-      
-      const { token } = req.body
-      const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: process.env.GOOGLE_CLIENTID}
-        )
-      const { name, email, picture } = ticket.getPayload()
-      console.log(name + email + picture)
-      const user = await Users.findByPk(email)
+      const user = await Users.findByPk(req.params.email)
       if(!user)
       {
-          Users.create({email:email,gamesVotedOn:[]})
-          res.send("Created a new user")
+          Users.create({email:req.params.email,gamesVotedOn:[]})
+          res.send("true")
       }
-      else{res.send("This user already exists")}}
+      else{res.send("true")}}
       catch (error) {
-      //res.send(error.message)
+      res.send(error.message)
     }
   })
   router.put('/:email/:game', async (req, res) => {
