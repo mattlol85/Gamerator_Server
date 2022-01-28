@@ -1,18 +1,39 @@
 const router = require('express').Router()
 const {Users, gameDatabase} = require('../database')
 const {Op} = require('sequelize')
+const {OAuth2Client} = require("google-auth-library")
 
-router.post('/:email', async (req, res) => {
+const client = new OAuth2Client(process.env.GOOGLE_CLIENTID)
+
+// router.post('/auth', async (req, res) => {
+// const { token } = req.body
+//   const ticket = await client.verifyIdToken({
+//     idToken: token,
+//     audience: 'http://localhost:3000/'
+//   })
+//   const { name, email, picture } = ticket.getPayload()
+//   res.status(201)
+//   res.json({ name, email, picture })})
+
+router.post('/', async (req, res) => {
     try {
-      const user = await Users.findByPk(req.params.email)
+      
+      const { token } = req.body
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENTID}
+        )
+      const { name, email, picture } = ticket.getPayload()
+      console.log(name + email + picture)
+      const user = await Users.findByPk(email)
       if(!user)
       {
-          Users.create({email:req.params.email,gamesVotedOn:[]})
+          Users.create({email:email,gamesVotedOn:[]})
           res.send("Created a new user")
       }
-      else{res.send("User already exists!")}}
+      else{res.send("This user already exists")}}
       catch (error) {
-      res.send(error.message)
+      //res.send(error.message)
     }
   })
   router.put('/:email/:game', async (req, res) => {
