@@ -7,7 +7,7 @@ const gameDatabase = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME,
     host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
     dialectOptions: {
-        ssl: true
+        ssl: false
     }
 });
 
