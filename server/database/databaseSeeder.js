@@ -9,7 +9,10 @@ const seedDatabase = async ()=>{
 var g = {genreIds:[4,51,3,5,2],genreNames:["Action","Indie","Adventure","RPG","Shooter"]}
 var gameData;
 for(let i = 0;i<5;i++)
-{gameData = (await axios.get(`https://api.rawg.io/api/games?key=${process.env.GRAW_KEY}&page_size=30&genres=${g.genreIds[i]}`)).data.results
+{
+for(let y = 1;y<3;y++)
+{
+gameData = (await axios.get(`https://api.rawg.io/api/games?key=${process.env.GRAW_KEY}&page_size=30&genres=${g.genreIds[i]}&page=${y}`)).data.results
 for(let element of gameData)
 {
     if(!await Games.findOne({where:{gameName:element.name}}))
@@ -39,6 +42,7 @@ for(let element of gameData)
             images:arrImages.slice(1)}})
         }
     }
+}
 console.log(`------------------\nFinished loading ${g.genreNames[i]} chunk!`)
 }
 console.log(`------------------\nFinished loading!`)
