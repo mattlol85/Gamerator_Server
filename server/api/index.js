@@ -10,6 +10,8 @@ Router.use("/shooter", require("./shootergames"));
 Router.use("/rpg", require("./rpggames"));
 Router.use("/user", require("./userapi"));
 
+
+
 Router.get("/all", async (req, res) => {
   try {
     const games = await Games.findAll({order: [["id", "ASC"]]}).then((games) => {
